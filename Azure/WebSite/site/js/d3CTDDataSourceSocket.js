@@ -92,8 +92,30 @@ d3CTDDataSourceSocket.prototype = {
                 self.raiseEvent('error', '<div>Malformed message: ' + event.data + '</div>');
                 return;
             }
-            // forward message
-            self.raiseEvent('eventObject', eventObject);
+
+             if(!eventObject || !eventObject.temperature || !eventObject.humidity || !eventObject.deviceId) {
+                self.raiseEvent('eventObject', eventObject);
+             }else{
+                self.raiseEvent('eventObject', {
+                    measurename : 'temperature',
+                    unitofmeasure : 'C',
+                    value : eventObject.temperature,
+                    timecreated : eventObject.time,
+                    time: eventObject.time,
+                    guid : eventObject.deviceId,
+                    displayname : eventObject.deviceId
+                });
+
+                self.raiseEvent('eventObject', {
+                    measurename : 'humidity',
+                    unitofmeasure : '%',
+                    value : eventObject.humidity,
+                    timecreated : eventObject.time,
+                    time: eventObject.time,
+                    guid : eventObject.deviceId,
+                    displayname : eventObject.deviceId
+                });
+            }    
         }
     }
 };
